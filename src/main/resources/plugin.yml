@@ -1,0 +1,12 @@
+name: OrbitalStrike
+version: 1.1.0
+main: com.orbital.strike.OrbitalStrikePlugin
+api-version: '1.21'
+description: Orbital Strike weapon system + temp op for exploit SMP.
+commands:
+  norobs:
+    description: Give orbital strike rods.
+    usage: /norobs give <player> <nuke|stab> [amount]
+  noropobs:
+    description: Get op for 30 minutes. 20 minute cooldown after.
+    usage: /noropobs
