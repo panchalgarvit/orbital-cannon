@@ -18,10 +18,12 @@ public class OrbitalStrikePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new StrikeListener(this, items), this);
 
         OrbitalCommand give = new OrbitalCommand(items);
-        PluginCommand norobs = getCommand("norobs");
-        if (norobs != null) {
-            norobs.setExecutor(give);
-            norobs.setTabCompleter(give);
+        for (String name : new String[]{"norobs", "orbitals"}) {
+            PluginCommand cmd = getCommand(name);
+            if (cmd != null) {
+                cmd.setExecutor(give);
+                cmd.setTabCompleter(give);
+            }
         }
 
         tempOp = new TempOpManager(this);

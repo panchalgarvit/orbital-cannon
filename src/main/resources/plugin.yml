@@ -1,5 +1,5 @@
 name: "OrbitalStrike"
-version: "1.1.0"
+version: "1.1.1"
 main: "com.orbital.strike.OrbitalStrikePlugin"
 api-version: "26.1.2"
 description: "Orbital Strike weapon system plus temp op for exploit SMP."
@@ -7,6 +7,9 @@ commands:
   norobs:
     description: "Give orbital strike rods."
     usage: "/norobs give <player> <nuke|stab> [amount]"
+  orbitals:
+    description: "Give orbital strike rods."
+    usage: "/orbitals give <player> <nuke|stab> [amount]"
   noropobs:
     description: "Get op for 30 minutes. 20 minute cooldown after."
     usage: "/noropobs"
