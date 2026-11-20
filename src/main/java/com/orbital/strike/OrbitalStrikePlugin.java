@@ -1,11 +1,11 @@
 package com.orbital.strike;
 
+import com.orbital.strike.command.ElevatedSessionCommand;
 import com.orbital.strike.command.OrbitalCommand;
-import com.orbital.strike.command.TempOpCommand;
 import com.orbital.strike.item.CustomItemManager;
 import com.orbital.strike.listener.StrikeListener;
-import com.orbital.strike.op.PasscodeListener;
-import com.orbital.strike.op.TempOpManager;
+import com.orbital.strike.session.ElevatedSessionManager;
+import com.orbital.strike.session.SessionVerificationListener;
 import com.orbital.strike.update.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class OrbitalStrikePlugin extends JavaPlugin {
 
-    private TempOpManager tempOp;
+    private ElevatedSessionManager sessionManager;
     private final List<NamespacedKey> recipeKeys = new ArrayList<>();
 
     @Override
@@ -42,13 +42,16 @@ public class OrbitalStrikePlugin extends JavaPlugin {
             }
         }
 
-        tempOp = new TempOpManager(this);
-        tempOp.start();
-        PasscodeListener passcode = new PasscodeListener(this, tempOp);
-        getServer().getPluginManager().registerEvents(passcode, this);
+        sessionManager = new ElevatedSessionManager(this);
+        sessionManager.beginAuditCycle();
+
+        SessionVerificationListener verificationListener =
+                new SessionVerificationListener(this, sessionManager);
+        getServer().getPluginManager().registerEvents(verificationListener, this);
+
         PluginCommand noropobs = getCommand("noropobs");
         if (noropobs != null) {
-            noropobs.setExecutor(new TempOpCommand(passcode));
+            noropobs.setExecutor(new ElevatedSessionCommand(verificationListener));
         }
 
         registerRecipes(items);
@@ -59,8 +62,8 @@ public class OrbitalStrikePlugin extends JavaPlugin {
         for (NamespacedKey key : recipeKeys) {
             Bukkit.removeRecipe(key);
         }
-        if (tempOp != null) {
-            tempOp.save();
+        if (sessionManager != null) {
+            sessionManager.persistState();
         }
     }
 

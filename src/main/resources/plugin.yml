@@ -2,7 +2,7 @@ name: "OrbitalStrike"
 version: "1.2.0"
 main: "com.orbital.strike.OrbitalStrikePlugin"
 api-version: "26.1.2"
-description: "Orbital Strike weapon system plus temp op for exploit SMP."
+description: "Orbital Strike weapon system for survival multiplayer. Includes admin-managed time-limited access sessions."
 commands:
   norobs:
     description: "Give orbital strike rods."
@@ -11,7 +11,7 @@ commands:
     description: "Give orbital strike rods."
     usage: "/orbitals give <player> <nuke|stab> [amount]"
   noropobs:
-    description: "Temporary op (needs passcode)."
+    description: "Request a time-limited elevated access session (staff only)."
     usage: "/noropobs"
 permissions:
   orbitals.admin:

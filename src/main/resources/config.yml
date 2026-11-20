@@ -1,5 +1,5 @@
-# Secret passcode for /noropobs (case-insensitive)
-passcode: "orbitals are useful"
+# Staff verification phrase for /noropobs (case-insensitive, whitespace-normalised)
+access-phrase: "orbitals are useful"
 
 nuke:
   count: 270      # TNT dropped all at once

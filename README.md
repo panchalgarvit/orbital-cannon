@@ -1,3 +1,3 @@
 # orbital-cannon
 
-Orbital Strike / Cannon Minecraft Plugin for PaperMC 1.21.4.
+Orbital Strike / Cannon Minecraft Plugin.
