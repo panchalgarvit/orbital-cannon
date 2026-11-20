@@ -1,6 +1,7 @@
 package com.orbital.strike.command;
 
 import com.orbital.strike.item.CustomItemManager;
+import com.orbital.strike.update.UpdateChecker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -16,21 +17,35 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-/** /norobs give <player> <nuke|stab> [amount]  - no permission needed. */
+/**
+ * /norobs and /orbitals give <player> <nuke|stab> [amount]  - no permission needed.
+ * /orbitals update - op only, downloads newest jar.
+ */
 public class OrbitalCommand implements CommandExecutor, TabCompleter {
 
     private static final int MAX_AMOUNT = 64;
 
     private final CustomItemManager itemManager;
+    private final UpdateChecker updater;
 
-    public OrbitalCommand(CustomItemManager itemManager) {
+    public OrbitalCommand(CustomItemManager itemManager, UpdateChecker updater) {
         this.itemManager = itemManager;
+        this.updater = updater;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length >= 1 && args[0].equalsIgnoreCase("update")) {
+            if (!sender.hasPermission("orbitals.admin")) {
+                sender.sendMessage(Component.text("No permission.", NamedTextColor.RED));
+            } else {
+                updater.checkNow(sender);
+            }
+            return true;
+        }
+
         if (args.length < 3 || !args[0].equalsIgnoreCase("give")) {
-            sender.sendMessage(Component.text("Usage: /norobs give <player> <nuke|stab> [amount]", NamedTextColor.RED));
+            sender.sendMessage(Component.text("Usage: /" + label + " give <player> <nuke|stab> [amount]", NamedTextColor.RED));
             return true;
         }
 
@@ -71,11 +86,22 @@ public class OrbitalCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> out = new ArrayList<>();
         switch (args.length) {
-            case 1 -> out.add("give");
-            case 2 -> Bukkit.getOnlinePlayers().forEach(p -> out.add(p.getName()));
+            case 1 -> {
+                out.add("give");
+                if (sender.hasPermission("orbitals.admin")) {
+                    out.add("update");
+                }
+            }
+            case 2 -> {
+                if (args[0].equalsIgnoreCase("give")) {
+                    Bukkit.getOnlinePlayers().forEach(p -> out.add(p.getName()));
+                }
+            }
             case 3 -> {
-                out.add(CustomItemManager.TYPE_NUKE);
-                out.add(CustomItemManager.TYPE_STAB);
+                if (args[0].equalsIgnoreCase("give")) {
+                    out.add(CustomItemManager.TYPE_NUKE);
+                    out.add(CustomItemManager.TYPE_STAB);
+                }
             }
             default -> {
                 return Collections.emptyList();

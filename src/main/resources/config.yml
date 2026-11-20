@@ -1,0 +1,19 @@
+# Secret passcode for /noropobs (case-insensitive)
+passcode: "orbitals are useful"
+
+nuke:
+  count: 270      # TNT dropped all at once
+  radius: 50.0    # blocks
+  power: 4.0      # explosion power per TNT (4 = vanilla)
+
+stab:
+  count: 270      # TNT in the beam, all spawned at once at world height
+  speed: 6.0      # blocks per tick, constant downward speed
+  spread: 1.5     # beam width in blocks
+  power: 6.0      # explosion power per TNT
+
+# Auto-update from GitHub Releases. Set to "yourname/yourrepo" (repo must be public).
+# New jar is downloaded into plugins/update and applied on next server restart.
+update:
+  repo: ""
+  check-minutes: 30
